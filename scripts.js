@@ -213,7 +213,7 @@ async function populateWindowContent(contentElement, title) {
             const folderContents = contentElement.querySelector('.folder-contents');
 
             try {
-                const response = await fetch('posts.json');
+                const response = await fetch('my blog posts/posts.json');
                 if (!response.ok) throw new Error('Could not load posts.json');
                 const posts = await response.json();
 
