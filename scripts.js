@@ -263,20 +263,20 @@ async function populateWindowContent(contentElement, title) {
             contentElement.innerHTML = `
                 <h2>My Projects</h2>
                 <div class="folder-contents">
-                    <div class="file" ondblclick="createWindow('Project 1')">
+                    <div class="file" ondblclick="createWindow('Windows 98 Style Website')">
                         <img src="images/doc.png" alt="Document">
-                        <div>Project 1</div>
+                        <div>Windows 98 Style Website</div>
                     </div>
-                    <div class="file" ondblclick="createWindow('Project 2')">
+                    <div class="file" ondblclick="createWindow('Kitchen Inventory App')">
                         <img src="images/doc.png" alt="Document">
-                        <div>Project 2</div>
+                        <div>Kitchen Inventory App</div>
                     </div>
                 </div>
             `;
             break;
-        case 'Project 1':
+        case 'Windows 98 Style Website':
             contentElement.innerHTML = `
-                <h2>Project 1: Windows-Style Blog</h2>
+                <h2>Windows-Style Website</h2>
                 <p>This very website you're using right now! A blog designed to look like
                    a Windows 95/98 desktop.</p>
                 <p>Technologies used:</p>
@@ -287,16 +287,16 @@ async function populateWindowContent(contentElement, title) {
                 </ul>
             `;
             break;
-        case 'Project 2':
+        case 'Kitchen Inventory App':
             contentElement.innerHTML = `
-                <h2>Project 2: Retro Game Collection</h2>
-                <p>A collection of simple retro-style games implemented in HTML5 Canvas and JavaScript.</p>
-                <p>Games included:</p>
+                <h2>Kitchen Inventory Application</h2>
+                <p>An application meant to help you with the upkeep of things within your kitchen</p>
+                <p>Items like: </p>
                 <ul>
-                    <li>Snake</li>
-                    <li>Pong</li>
-                    <li>Tetris</li>
-                    <li>Minesweeper</li>
+                    <li>Shopping Lists</li>
+                    <li>Expiring Items</li>
+                    <li>Recipe Builder for items on hand</li>
+                    <li>Tracking Supply</li>
                 </ul>
             `;
             break;
