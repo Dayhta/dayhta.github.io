@@ -191,15 +191,15 @@ function populateWindowContent(contentElement, title) {
                 <h2>My Blog Posts</h2>
                 <div class="folder-contents">
                     <div class="file" ondblclick="createWindow('First Post')">
-                        <img src="doc.png" alt="Document">
+                        <img src="images/doc.png" alt="Document">
                         <div>First Post</div>
                     </div>
                     <div class="file" ondblclick="createWindow('Second Post')">
-                        <img src="doc.png" alt="Document">
+                        <img src="images/doc.png" alt="Document">
                         <div>Second Post</div>
                     </div>
                     <div class="file" ondblclick="createWindow('Third Post')">
-                        <img src="doc.png" alt="Document">
+                        <img src="images/doc.png" alt="Document">
                         <div>Third Post</div>
                     </div>
                 </div>
@@ -283,11 +283,11 @@ function populateWindowContent(contentElement, title) {
                 <h2>My Projects</h2>
                 <div class="folder-contents">
                     <div class="file" ondblclick="createWindow('Project 1')">
-                        <img src="doc.png" alt="Document">
+                        <img src="images/doc.png" alt="Document">
                         <div>Project 1</div>
                     </div>
                     <div class="file" ondblclick="createWindow('Project 2')">
-                        <img src="doc.png" alt="Document">
+                        <img src="images/doc.png" alt="Document">
                         <div>Project 2</div>
                     </div>
                 </div>
