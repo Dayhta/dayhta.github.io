@@ -183,73 +183,54 @@ function createWindow(title) {
     return win;
 }
 
-// Function to populate window content based on title
-function populateWindowContent(contentElement, title) {
+
+async function populateWindowContent(contentElement, title) {
+    // A list of known non-post titles.
+    const nonPostTitles = ['My Blog Posts', 'About Me', 'Projects', 'Project 1', 'Project 2', 'Contact'];
+
+    // Check if the title is a blog post by exclusion
+    if (!nonPostTitles.includes(title)) {
+        // Assume it's a blog post. Generate file path from title.
+        const filePath = `my blog posts/${title.toLowerCase().replace(/ /g, '-')}.html`;
+        contentElement.innerHTML = `<p>Loading...</p>`;
+
+        try {
+            const response = await fetch(filePath);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const html = await response.text();
+            contentElement.innerHTML = html;
+        } catch (error) {
+            console.error('Error fetching post:', error);
+            contentElement.innerHTML = `<p>Error: Could not load post content.</p>`;
+        }
+        return; // Exit after handling the post
+    }
+
+    // Handle non-post windows
     switch (title) {
         case 'My Blog Posts':
-            contentElement.innerHTML = `
-                <h2>My Blog Posts</h2>
-                <div class="folder-contents">
-                    <div class="file" ondblclick="createWindow('First Post')">
+            contentElement.innerHTML = `<h2>My Blog Posts</h2><div class="folder-contents"></div>`;
+            const folderContents = contentElement.querySelector('.folder-contents');
+
+            try {
+                const response = await fetch('posts.json');
+                if (!response.ok) throw new Error('Could not load posts.json');
+                const posts = await response.json();
+
+                posts.forEach(post => {
+                    const fileElement = document.createElement('div');
+                    fileElement.className = 'file';
+                    fileElement.innerHTML = `
                         <img src="images/doc.png" alt="Document">
-                        <div>First Post</div>
-                    </div>
-                    <div class="file" ondblclick="createWindow('Second Post')">
-                        <img src="images/doc.png" alt="Document">
-                        <div>Second Post</div>
-                    </div>
-                    <div class="file" ondblclick="createWindow('Third Post')">
-                        <img src="images/doc.png" alt="Document">
-                        <div>Third Post</div>
-                    </div>
-                </div>
-            `;
-            
-            // Add event listeners for the files
-            setTimeout(() => {
-                contentElement.querySelectorAll('.file').forEach(file => {
-                    file.addEventListener('dblclick', function() {
-                        const postTitle = this.querySelector('div').textContent;
-                        createWindow(postTitle);
-                    });
+                        <div>${post.title}</div>
+                    `;
+                    fileElement.ondblclick = () => createWindow(post.title);
+                    folderContents.appendChild(fileElement);
                 });
-            }, 0);
-            
-            break;
-        case 'First Post':
-            contentElement.innerHTML = `
-                <h2>My First Blog Post</h2>
-                <p class="post-date">Posted on January 15, 2023</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, 
-                   nisl eget aliquam ultricies, nunc nisl ultricies nunc, eu porttitor 
-                   nisl nisl eu nisl. Nulla facilisi. Nulla facilisi.</p>
-                <p>Donec euismod, nisl eget aliquam ultricies, nunc nisl ultricies nunc, 
-                   eu porttitor nisl nisl eu nisl. Nulla facilisi. Nulla facilisi.</p>
-            `;
-            break;
-        case 'Second Post':
-            contentElement.innerHTML = `
-                <h2>My Second Blog Post</h2>
-                <p class="post-date">Posted on February 28, 2023</p>
-                <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices 
-                   posuere cubilia curae; Donec velit neque, auctor sit amet aliquam vel, 
-                   ullamcorper sit amet ligula. Praesent sapien massa, convallis a 
-                   pellentesque nec, egestas non nisi.</p>
-                <p>Curabitur aliquet quam id dui posuere blandit. Vivamus suscipit tortor 
-                   eget felis porttitor volutpat. Nulla quis lorem ut libero malesuada feugiat.</p>
-            `;
-            break;
-        case 'Third Post':
-            contentElement.innerHTML = `
-                <h2>My Third Blog Post</h2>
-                <p class="post-date">Posted on March 22, 2023</p>
-                <p>Cras ultricies ligula sed magna dictum porta. Vivamus magna justo, 
-                   lacinia eget consectetur sed, convallis at tellus. Curabitur non 
-                   nulla sit amet nisl tempus convallis quis ac lectus.</p>
-                <p>Nulla quis lorem ut libero malesuada feugiat. Mauris blandit aliquet 
-                   elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna 
-                   dictum porta.</p>
-            `;
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                folderContents.innerHTML = `<p>Error loading blog posts.</p>`;
+            }
             break;
         case 'About Me':
             contentElement.innerHTML = `
@@ -292,17 +273,6 @@ function populateWindowContent(contentElement, title) {
                     </div>
                 </div>
             `;
-            
-            // Add event listeners
-            setTimeout(() => {
-                contentElement.querySelectorAll('.file').forEach(file => {
-                    file.addEventListener('dblclick', function() {
-                        const projectTitle = this.querySelector('div').textContent;
-                        createWindow(projectTitle);
-                    });
-                });
-            }, 0);
-            
             break;
         case 'Project 1':
             contentElement.innerHTML = `
@@ -353,99 +323,25 @@ function populateWindowContent(contentElement, title) {
         default:
             contentElement.innerHTML = `<p>Content for ${title} window</p>`;
     }
-    
+
     // Add styles for the window content
     const style = document.createElement('style');
     style.textContent = `
-        .folder-contents {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 15px;
-        }
-        
-        .file {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 80px;
-            cursor: pointer;
-            padding: 5px;
-        }
-        
-        .file:hover {
-            background-color: rgba(0, 0, 255, 0.1);
-        }
-        
-        .file img {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 5px;
-        }
-        
-        .file div {
-            text-align: center;
-            font-size: 12px;
-            word-break: break-word;
-        }
-        
-        .post-date {
-            color: #666;
-            font-style: italic;
-            margin-bottom: 15px;
-        }
-        
-        .about-content {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .profile-pic {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 2px solid #000080;
-            align-self: center;
-            margin-bottom: 10px;
-        }
-        
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
-        .form-group label {
-            font-weight: bold;
-        }
-        
-        .form-group input, .form-group textarea {
-            padding: 5px;
-            border: 1px inset #dfdfdf;
-            background-color: white;
-        }
-        
-        button {
-            padding: 5px 15px;
-            background-color: #c0c0c0;
-            border: 2px outset #dfdfdf;
-            cursor: pointer;
-            width: fit-content;
-        }
-        
-        button:active {
-            border: 2px inset #dfdfdf;
-        }
+        .folder-contents { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; }
+        .file { display: flex; flex-direction: column; align-items: center; width: 80px; cursor: pointer; padding: 5px; }
+        .file:hover { background-color: rgba(0, 0, 255, 0.1); }
+        .file img { width: 32px; height: 32px; margin-bottom: 5px; }
+        .file div { text-align: center; font-size: 12px; word-break: break-word; }
+        .post-date { color: #666; font-style: italic; margin-bottom: 15px; }
+        .about-content { display: flex; flex-direction: column; gap: 10px; }
+        .profile-pic { width: 100px; height: 100px; border-radius: 50%; border: 2px solid #000080; align-self: center; margin-bottom: 10px; }
+        .contact-form { display: flex; flex-direction: column; gap: 15px; margin-top: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-weight: bold; }
+        .form-group input, .form-group textarea { padding: 5px; border: 1px inset #dfdfdf; background-color: white; }
+        button { padding: 5px 15px; background-color: #c0c0c0; border: 2px outset #dfdfdf; cursor: pointer; width: fit-content; }
+        button:active { border: 2px inset #dfdfdf; }
     `;
-    
     contentElement.appendChild(style);
 }
 
