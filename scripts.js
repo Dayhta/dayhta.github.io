@@ -255,15 +255,25 @@ function populateWindowContent(contentElement, title) {
             contentElement.innerHTML = `
                 <h2>About Me</h2>
                 <div class="about-content">
-                    <img src="avatar.png" alt="Profile Picture" class="profile-pic">
-                    <p>Hello! I'm a web developer and blogger with a passion for retro UI design.
-                       I created this Windows-style blog to share my thoughts and projects.</p>
-                    <p>Skills:</p>
+                    <img src="images/avatar.png" alt="Profile Picture" class="profile-pic">
+                    <p>Hello! I am Dayhta. I'm a computer enthusiast/researcher. </p>
+                    <p>General Skills:</p>
                     <ul>
-                        <li>HTML, CSS, JavaScript</li>
-                        <li>UI/UX Design</li>
-                        <li>Retro Computing</li>
-                        <li>Technical Writing</li>
+                        <li>DevSecOps/AppSec</li>
+                        <li>Malware Analysis</li>
+                        <li>Threat Intelligence</li>
+                        <li>Purple Teaming </li>
+                        <li>System Administration</li>
+                    </ul>
+                    <p>Technical Skills:</p>
+                    <ul>
+                        <li>HTML/CSS</li>
+                        <li>JavaScript</li>
+                        <li>Python</li>
+                        <li>Docker</li>
+                        <li>Proxmox</li>
+                        <li>Bash</li>
+                        <li>Powershell</li>
                     </ul>
                 </div>
             `;
